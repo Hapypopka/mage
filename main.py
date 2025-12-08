@@ -32,7 +32,7 @@ from config import (
     BROWSER_SCREEN,
 )
 from dungeon_config import DUNGEON_ORDER, DUNGEONS, START_DUNGEON_INDEX
-from utils import antibot_delay, log, safe_click, reset_watchdog, is_watchdog_triggered, get_watchdog_idle_time
+from utils import antibot_delay, log, safe_click, reset_watchdog, is_watchdog_triggered, get_watchdog_idle_time, init_logging, log_error, save_debug_screenshot
 from popups import collect_loot, close_all_popups, priority_checks, emergency_unstuck
 from backpack import cleanup_backpack_if_needed
 from combat import (
@@ -200,6 +200,7 @@ def main(headless=False):
             if is_watchdog_triggered():
                 idle_time = int(get_watchdog_idle_time())
                 log(f"🚨 WATCHDOG: Бот простаивает {idle_time} сек — запуск аварийного выхода")
+                save_debug_screenshot(page, "watchdog")
                 emergency_unstuck(page)
                 no_units_attempts = 0
                 continue
@@ -308,7 +309,7 @@ def main(headless=False):
                 antibot_delay(0.8, 0.4)
 
             except Exception as e:
-                print(f"Ошибка в основном цикле: {e}")
+                log_error(f"Ошибка в основном цикле: {e}", page)
                 # При ошибке пробуем восстановиться
                 log("🔄 Попытка восстановления после ошибки...")
                 if recover_to_dungeons(page):
@@ -354,6 +355,10 @@ if __name__ == "__main__":
     else:
         print("ℹ️  Клавиатурное управление отключено (сервер/Linux)")
 
+    # Инициализируем логирование в файл
+    init_logging()
+    log("🚀 Бот запущен")
+
     # Выводим накопленную статистику при запуске
     print_stats()
 
@@ -368,7 +373,7 @@ if __name__ == "__main__":
             try:
                 main(headless=headless_mode)
             except Exception as e:
-                print(f"❌ Критическая ошибка: {e}")
+                log_error(f"Критическая ошибка: {e}")
 
             print(f"\n{time.strftime('%H:%M:%S')} ⏳ Пауза 10 сек перед перезапуском...")
             time.sleep(10)

@@ -10,7 +10,6 @@ SETTINGS_FILE = os.path.join(SCRIPT_DIR, "settings.json")
 DUNGEON_ORDER = [
     "dng:dSanctuary",      # Святилище Накрила (первый)
     "dng:dHellRuins",
-    "dng:RestMonastery",
     "dng:HighDungeon",
     "dng:CitadelHolding",
     "dng:Underlight",
@@ -40,42 +39,31 @@ DUNGEONS = {
     },
     "dng:dHellRuins": {
         "name": "Hell Ruins",
-        "need_difficulty": True,
-        "difficulty_path": "dHellRuins",
-    },
-    "dng:RestMonastery": {
-        "name": "Rest Monastery",
-        "need_difficulty": True,
-        "difficulty_path": "RestMonastery",
+        "need_difficulty": False,
     },
     "dng:HighDungeon": {
         "name": "High Dungeon",
-        "need_difficulty": True,
-        "difficulty_path": "HighDungeon",
+        "need_difficulty": False,
     },
     "dng:CitadelHolding": {
         "name": "Citadel Holding",
-        "need_difficulty": True,
-        "difficulty_path": "CitadelHolding",
+        "need_difficulty": False,
     },
     "dng:Underlight": {
         "name": "Underlight",
-        "need_difficulty": True,
-        "difficulty_path": "Underlight",
+        "need_difficulty": False,
     },
     "dng:way2Baron": {
         "name": "Way to Baron",
-        "need_difficulty": False,  # Нельзя изменить сложность
+        "need_difficulty": False,
     },
     "dng:Barony": {
         "name": "Barony",
-        "need_difficulty": True,
-        "difficulty_path": "Barony",
+        "need_difficulty": False,
     },
     "dng:ShadowGuard": {
         "name": "Shadow Guard",
-        "need_difficulty": True,
-        "difficulty_path": "ShadowGuard",
+        "need_difficulty": False,
     },
 }
 
