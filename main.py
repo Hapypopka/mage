@@ -108,10 +108,15 @@ pause_controller = PauseController()
 
 def main(headless=False):
     with sync_playwright() as p:
-        # Запуск браузера
-        browser = p.firefox.launch(
+        # Запуск браузера (Chromium легче Firefox)
+        browser = p.chromium.launch(
             headless=headless,
-            args=["--start-maximized"]
+            args=[
+                "--start-maximized",
+                "--disable-gpu",
+                "--disable-dev-shm-usage",
+                "--no-sandbox",
+            ]
         )
 
         # Контекст с размером экрана
@@ -128,6 +133,10 @@ def main(headless=False):
         context.add_cookies(saved_cookies)
 
         page = context.new_page()
+
+        # Блокируем картинки, CSS, шрифты для экономии памяти
+        page.route("**/*.{png,jpg,jpeg,gif,webp,svg,ico}", lambda route: route.abort())
+        page.route("**/*.{woff,woff2,ttf,otf,eot}", lambda route: route.abort())
 
         # Заходим на главную, чтобы куки применились
         page.goto(BASE_URL)
